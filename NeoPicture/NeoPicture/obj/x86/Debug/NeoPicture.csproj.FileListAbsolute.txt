@@ -1,0 +1,5 @@
+C:\Users\joobrien\documents\visual studio 2010\Projects\NeoPicture\NeoPicture\bin\Debug\NeoPicture.exe
+C:\Users\joobrien\documents\visual studio 2010\Projects\NeoPicture\NeoPicture\bin\Debug\NeoPicture.pdb
+C:\Users\joobrien\documents\visual studio 2010\Projects\NeoPicture\NeoPicture\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Users\joobrien\documents\visual studio 2010\Projects\NeoPicture\NeoPicture\obj\x86\Debug\NeoPicture.exe
+C:\Users\joobrien\documents\visual studio 2010\Projects\NeoPicture\NeoPicture\obj\x86\Debug\NeoPicture.pdb
