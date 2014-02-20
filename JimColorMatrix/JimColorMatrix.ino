@@ -1,6 +1,10 @@
 #include <Adafruit_NeoPixel.h>
 #define PIN 6
+#define BUFFLEN 64*3+1
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(64, PIN, NEO_GRB + NEO_KHZ800);
+char pos;
+char colordata[3];
+char color;
 void setup() {
   // put your setup code here, to run once:
   strip.begin();
@@ -11,32 +15,22 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly: 
 
-  char colordata[80];
-  char result;
-  // Read a null terminated string
-  result=Serial.readBytesUntil('\0',colordata,79);
-  // If there's enough in there to display
-  if (result>=64) {
-    // Dump it to the screen.
-    for (char i=0;i<64;i++) {
-      // Unpack the pixels.
-      // Bit 7 is ignored (always 1)
-      // Bits 5&6 are red
-      // Bits 2, 3, and 4 are green
-      // Bits 0&1 are blue
-      // The shifts are currently being scales down by two to dim the LEDs (1/4th power) the reasoning being that the
-      // matrix is too bright indoors.
-      strip.setPixelColor(i,strip.Color((colordata[i]&0x60)<<(1-2),(colordata[i]&0x1C)<<(3-2),(colordata[i]&0x3)<<(6-2)));
+  int result;
+
+  if (Serial.available() > 0) {
+    result = Serial.read();
+    if (result==0xFF) {
+      strip.show();
+      pos=0;
+      color=0;
+    }
+    else {
+      colordata[color++] = (byte) result>>2;
+      if (color>=3) {
+        color=0;
+        strip.setPixelColor(pos,strip.Color(colordata[0],colordata[1],colordata[2]));
+        pos++;
+      }
     }
   }
-  // If we get a non-empty frame but not enough actual data
-  else if (result>0) {
-    // This implies a comms error. Write a red dot in the to right and black everywhere else.
-    for(char i=1;i<64;i++) {
-      strip.setPixelColor(i,strip.Color(0,0,0));
-    }
-    strip.setPixelColor(0,strip.Color(255,0,0));
-  }
-  // Dump the buffer to the matrix bus.
-  strip.show();
 }
